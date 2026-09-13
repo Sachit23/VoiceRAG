@@ -57,3 +57,22 @@ class EmbeddingService:
             normalize_embeddings=True,
             convert_to_numpy=True,
         )
+    
+    def embed_sentences(self, sentences: list[str]) -> np.ndarray:
+        if not sentences:
+            raise ValueError("Provide at least one sentence.")
+
+        if any(not sentence.strip() for sentence in sentences):
+            raise ValueError("Sentences cannot be empty.")
+
+        texts = ["query: " + sentence.strip() for sentence in sentences]
+
+        self._validate_inputs(texts)
+
+        return self.model.encode(
+            texts,
+            batch_size=32,
+            normalize_embeddings=True,
+            convert_to_numpy=True,
+        )
+    
